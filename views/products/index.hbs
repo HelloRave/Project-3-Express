@@ -1,0 +1,27 @@
+{{#extends 'base'}}
+{{#block 'content'}}
+<h1>All Products</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Description</th>
+            <th>Serving Size</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+            <tr>
+                <td>{{this.product_id}}</td>
+                <td>{{this.product_name}}</td>
+                <td>{{this.cost}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.serving_size}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/block}}
+{{/extends}}
