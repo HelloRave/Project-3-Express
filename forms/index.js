@@ -54,7 +54,7 @@ const createProductForm = (brands, allergens) => {
             choices: brands
         }),
         allergens: fields.string({
-            required: true,
+            required: false,
             errorAfterField: true,
             widget: widgets.multipleSelect(),
             choices: allergens
