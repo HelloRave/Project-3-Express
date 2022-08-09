@@ -27,4 +27,9 @@ const Allergen = bookshelf.model('Allergen', {
     }
 })
 
-module.exports = { Product, Brand, Allergen }
+const User = bookshelf.model('User', {
+    tableName: 'users',
+    idAttribute: 'user_id'
+})
+
+module.exports = { Product, Brand, Allergen, User }

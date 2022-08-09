@@ -49,10 +49,12 @@ app.use(function(req, res, next){
 // Import in routes
 const landingRoutes = require('./routes/landing')
 const productsRoutes = require('./routes/products')
+const userRoutes = require('./routes/users')
 
 // Use routes
 app.use('/', landingRoutes)
 app.use('/products', productsRoutes)
+app.use('/user', userRoutes)
 
 app.listen(3000, function(){
     console.log('Server started')

@@ -49,7 +49,7 @@ router.post('/create', async function(req, res){
                 await product.allergens().attach(allergens.split(','))
             }
 
-            req.flash('success_messages', `New Product ${product.get('product_name')} has been created`)
+            // req.flash('success_messages', `New Product ${product.get('product_name')} has been created`)
             res.redirect('/products')
         },
         error: function(form){
