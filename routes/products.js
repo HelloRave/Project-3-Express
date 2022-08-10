@@ -1,5 +1,6 @@
 const express = require('express');
 const { createProductForm, bootstrapField } = require('../forms');
+const { checkIfAuthenticated } = require('../middlewares');
 const router = express.Router()
 
 const {Product, Brand, Allergen} = require('../models')
@@ -13,7 +14,7 @@ router.get('/', async function(req, res){
     })
 })
 
-router.get('/create', async function(req, res){
+router.get('/create', checkIfAuthenticated, async function(req, res){
     
     const brand = await Brand.fetchAll().map((brand) => {
         return [brand.get('brand_id'), brand.get('brand_name')]
@@ -29,7 +30,7 @@ router.get('/create', async function(req, res){
     })
 })
 
-router.post('/create', async function(req, res){
+router.post('/create', checkIfAuthenticated, async function(req, res){
     const brand = await Brand.fetchAll().map((brand) => {
         return [brand.get('brand_id'), brand.get('brand_name')]
     })
@@ -65,7 +66,7 @@ router.post('/create', async function(req, res){
     })
 })
 
-router.get('/:product_id/update', async function(req,res){
+router.get('/:product_id/update', checkIfAuthenticated, async function(req,res){
     const product = await Product.where({
         product_id: req.params.product_id
     }).fetch({
@@ -98,7 +99,7 @@ router.get('/:product_id/update', async function(req,res){
     })
 })
 
-router.post('/:product_id/update', async function(req, res){
+router.post('/:product_id/update', checkIfAuthenticated, async function(req, res){
     const product = await Product.where({
         product_id: req.params.product_id
     }).fetch({
@@ -143,7 +144,7 @@ router.post('/:product_id/update', async function(req, res){
     })
 })
 
-router.get('/:product_id/delete', async function(req, res){
+router.get('/:product_id/delete', checkIfAuthenticated, async function(req, res){
     const product = await Product.where({
         product_id: req.params.product_id
     }).fetch({
@@ -155,7 +156,7 @@ router.get('/:product_id/delete', async function(req, res){
     })
 })
 
-router.post('/:product_id/delete', async function(req, res){
+router.post('/:product_id/delete', checkIfAuthenticated, async function(req, res){
     const product = await Product.where({
         product_id: req.params.product_id
     }).fetch({

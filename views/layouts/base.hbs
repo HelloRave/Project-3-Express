@@ -53,6 +53,16 @@
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+                <div>
+                    {{#if user}}
+                        Hi, {{user.firstName}} {{user.lastName}}
+
+                        <a href="/user/logout" class="ms-3 btn btn-primary btn-sm">Logout</a>
+
+                        {{else}}
+                        Hi stranger
+                    {{/if}}
+                </div>
             </div>
         </div>
     </nav>

@@ -9,6 +9,7 @@ require('dotenv').config()
 const session = require('express-session')
 const flash = require('connect-flash')
 const FileStore = require('session-file-store')(session)
+const csrf = require('csurf')
 
 // Create instance of express app
 let app = express()
@@ -36,13 +37,39 @@ app.use(session({
     saveUninitialized: true 
 }))
 
+// Enable csrf protection
+app.use(csrf())
+
 // Register Flash messages
 app.use(flash())
+
+app.use(function(req, res, next){
+    if (req.csrfToken) {
+        res.locals.csrfToken = req.csrfToken();
+    }
+    next();
+})
+
+// CSRF error handling
+app.use((err, req, res, next) => {
+    if (err && err.code == "EBADCSRFTOKEN") {
+        req.flash('error_messages', 'The form has expired. Please try again.');
+        res.redirect('back');
+    } else {
+        next()
+    }
+})
 
 // Register Flash middleware
 app.use(function(req, res, next){
     res.locals.success_messages = req.flash('success_messages');
     res.locals.error_messages = req.flash('error_messages');
+    next();
+})
+
+// Share the user data with hbs files 
+app.use(function(req,res,next){
+    res.locals.user = req.session.user;
     next();
 })
 
