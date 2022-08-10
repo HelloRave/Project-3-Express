@@ -2,6 +2,13 @@ const express = require('express')
 const { createUserForm, bootstrapField, createLoginForm } = require('../forms');
 const { User } = require('../models');
 const router = express.Router()
+const crypto = require('crypto')
+
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256')
+    const hash = sha256.update(password).digest('base64')
+    return hash 
+}
 
 router.get('/register', function (req, res) {
     const registerForm = createUserForm();
@@ -15,6 +22,7 @@ router.post('/register', function (req, res) {
     registerForm.handle(req, {
         success: async function (form) {
             let { confirm_password, ...userData } = form.data
+            userData.password = getHashedPassword(userData.password)
             const user = new User(userData)
             await user.save()
             req.flash('success_messages', 'User signed up successfully')
@@ -54,7 +62,7 @@ router.post('/login', function (req, res) {
                 req.flash('error_messages', 'Sorry, authentication failed')
                 res.redirect('/user/login')
             } else {
-                if (user.get('password') === form.data.password) {
+                if (user.get('password') === getHashedPassword(form.data.password)) {
                     req.session.user = {
                         id: user.get('user_id'),
                         email: user.get('email'),
