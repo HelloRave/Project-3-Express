@@ -38,6 +38,8 @@ const Allergen = bookshelf.model('Allergen', {
     }
 })
 
+
+
 const User = bookshelf.model('User', {
     tableName: 'users',
     idAttribute: 'user_id'
