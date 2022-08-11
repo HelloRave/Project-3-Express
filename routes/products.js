@@ -110,6 +110,9 @@ router.post('/:product_id/update', checkIfAuthenticated, async function(req, res
                 await product.allergens().detach(toRemove)
     
                 await product.allergens().attach(allergenIds)
+            } else {
+                let allergenIds = allergens.split(',')
+                await product.allergens().detach(allergenIds)
             }
             
             res.redirect('/products')

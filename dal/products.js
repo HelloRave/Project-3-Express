@@ -27,4 +27,10 @@ const getProductById = async (productId) => {
     })
 }
 
-module.exports = { getAllBrands, getAllAllergens, getAllCategories, getProductById }
+const getAllProducts = async () => {
+    return await Product.fetchAll({
+        withRelated: ['brand', 'category', 'allergens']
+    })
+}
+
+module.exports = { getAllBrands, getAllAllergens, getAllCategories, getProductById, getAllProducts }

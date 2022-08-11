@@ -38,7 +38,14 @@ app.use(session({
 }))
 
 // Enable csrf protection
-app.use(csrf())
+const csrfInstance = csrf();
+app.use(function(req,res,next){
+  if (req.url === '/checkout/process_payment' || req.url.slice(0,5) == '/api/') {
+    next();
+  } else {
+    csrfInstance(req,res,next);
+  }
+})
 
 // Register Flash messages
 app.use(flash())
@@ -78,10 +85,17 @@ const landingRoutes = require('./routes/landing')
 const productsRoutes = require('./routes/products')
 const userRoutes = require('./routes/users')
 
+const api = {
+    products: require('./routes/api/products')
+}
+
 // Use routes
 app.use('/', landingRoutes)
 app.use('/products', productsRoutes)
 app.use('/user', userRoutes)
+
+// API routes
+app.use('/api/products', express.json(), api.products)
 
 app.listen(3000, function(){
     console.log('Server started')
