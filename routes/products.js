@@ -3,11 +3,11 @@ const { createProductForm, bootstrapField } = require('../forms');
 const { checkIfAuthenticated } = require('../middlewares');
 const router = express.Router()
 
-const {Product, Brand, Allergen} = require('../models')
+const {Product, Brand, Allergen, Category} = require('../models')
 
 router.get('/', async function(req, res){
     const products = await Product.collection().fetch({
-        withRelated: ['brand', 'allergens']
+        withRelated: ['brand', 'category', 'allergens']
     });
     res.render('products/index', {
         products: products.toJSON()
@@ -20,11 +20,15 @@ router.get('/create', checkIfAuthenticated, async function(req, res){
         return [brand.get('brand_id'), brand.get('brand_name')]
     })
 
+    const category = await Category.fetchAll().map((category) => {
+        return [category.get('category_id'), category.get('category_name')]
+    })
+
     const allergen = await Allergen.fetchAll().map((allergen) => {
         return [allergen.get('allergen_id'), allergen.get('allergen_name')]
     })
 
-    const productForm = createProductForm(brand, allergen);
+    const productForm = createProductForm(brand, category, allergen);
     res.render('products/create', {
         form: productForm.toHTML(bootstrapField)
     })
@@ -35,11 +39,15 @@ router.post('/create', checkIfAuthenticated, async function(req, res){
         return [brand.get('brand_id'), brand.get('brand_name')]
     })
 
+    const category = await Category.fetchAll().map((category) => {
+        return [category.get('category_id'), category.get('category_name')]
+    })
+
     const allergen = await Allergen.fetchAll().map((allergen) => {
         return [allergen.get('allergen_id'), allergen.get('allergen_name')]
     })
 
-    const productForm = createProductForm(brand, allergen)
+    const productForm = createProductForm(brand, category, allergen)
     productForm.handle(req, {
         success: async function(form){
             const {allergens, ...productData} = form.data
@@ -50,7 +58,7 @@ router.post('/create', checkIfAuthenticated, async function(req, res){
                 await product.allergens().attach(allergens.split(','))
             }
 
-            // req.flash('success_messages', `New Product ${product.get('product_name')} has been created`)
+            req.flash('success_messages', `New Product ${product.get('product_name')} has been created`)
             res.redirect('/products')
         },
         error: function(form){
@@ -78,17 +86,22 @@ router.get('/:product_id/update', checkIfAuthenticated, async function(req,res){
         return [brand.get('brand_id'), brand.get('brand_name')]
     })
 
+    const category = await Category.fetchAll().map((category) => {
+        return [category.get('category_id'), category.get('category_name')]
+    })
+
     const allergen = await Allergen.fetchAll().map((allergen) => {
         return [allergen.get('allergen_id'), allergen.get('allergen_name')]
     })
 
-    const productForm = createProductForm(brand, allergen);
+    const productForm = createProductForm(brand, category, allergen);
 
     productForm.fields.product_name.value = product.get('product_name')
     productForm.fields.description.value = product.get('description')
     productForm.fields.cost.value = product.get('cost')
     productForm.fields.serving_size.value = product.get('serving_size')
     productForm.fields.brand_id.value = product.get('brand_id')
+    productForm.fields.category_id.value = product.get('category_id')
 
     let selectedAllergens = await product.related('allergens').pluck('allergen_id')
     productForm.fields.allergens.value = selectedAllergens
@@ -111,31 +124,43 @@ router.post('/:product_id/update', checkIfAuthenticated, async function(req, res
         return [brand.get('brand_id'), brand.get('brand_name')]
     })
 
+    const category = await Category.fetchAll().map((category) => {
+        return [category.get('category_id'), category.get('category_name')]
+    })
+
     const allergen = await Allergen.fetchAll().map((allergen) => {
         return [allergen.get('allergen_id'), allergen.get('allergen_name')]
     })
 
-    const productForm = createProductForm(brand, allergen);
+    const productForm = createProductForm(brand, category, allergen);
     productForm.handle(req, {
         success: async function(form){
             let {allergens, ...productData} = form.data
             product.set(productData)
             product.save()
 
-            let allergenIds = allergens.split(',')
-            let existingAllergenIds = await product.related('allergens').pluck('id')
-
-            let toRemove = existingAllergenIds.filter( id => {
-                return !allergenIds.includes(id)
-            })
-
-            await product.allergens().detach(toRemove)
-
-            await product.allergens().attach(allergenIds)
-
+            if (allergens){
+                let allergenIds = allergens.split(',')
+                let existingAllergenIds = await product.related('allergens').pluck('id')
+    
+                let toRemove = existingAllergenIds.filter( id => {
+                    return !allergenIds.includes(id)
+                })
+    
+                await product.allergens().detach(toRemove)
+    
+                await product.allergens().attach(allergenIds)
+            }
+            
             res.redirect('/products')
         },
         error: function(form){
+            res.render('products/update', {
+                form: form.toHTML(bootstrapField),
+                product: product.toJSON()
+            })
+        },
+        empty: function(form){
             res.render('products/update', {
                 form: form.toHTML(bootstrapField),
                 product: product.toJSON()

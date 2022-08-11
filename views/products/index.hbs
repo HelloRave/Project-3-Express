@@ -11,6 +11,7 @@
             <th>Description</th>
             <th>Serving Size</th>
             <th>Brand</th>
+            <th>Category</th>
             <th>Allergens</th>
             <th></th>
         </tr>
@@ -24,6 +25,7 @@
             <td>{{this.description}}</td>
             <td>{{this.serving_size}}</td>
             <td>{{this.brand.brand_name}}</td>
+            <td>{{this.category.category_name}}</td>
             <td>
                 {{#each this.allergens}}
                 <span class="badge bg-primary">{{this.allergen_name}}</span>
