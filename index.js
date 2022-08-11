@@ -5,6 +5,7 @@ const wax = require('wax-on')
 require('handlebars-helpers')({
     handlebars: hbs.handlebars
 })
+const cors = require('cors')
 require('dotenv').config()
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -16,6 +17,9 @@ let app = express()
 
 // Set view engine
 app.set('view engine', 'hbs')
+
+// enable cross-site origin resources sharing
+app.use(cors());
 
 // Static folder 
 app.use(express.static('public'))
