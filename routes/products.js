@@ -1,9 +1,10 @@
 const express = require('express');
 const { createProductForm, bootstrapField } = require('../forms');
 const { checkIfAuthenticated } = require('../middlewares');
+const dataLayer = require('../dal/products')
 const router = express.Router()
 
-const {Product, Brand, Allergen, Category} = require('../models')
+const {Product} = require('../models')
 
 router.get('/', async function(req, res){
     const products = await Product.collection().fetch({
@@ -16,17 +17,9 @@ router.get('/', async function(req, res){
 
 router.get('/create', checkIfAuthenticated, async function(req, res){
     
-    const brand = await Brand.fetchAll().map((brand) => {
-        return [brand.get('brand_id'), brand.get('brand_name')]
-    })
-
-    const category = await Category.fetchAll().map((category) => {
-        return [category.get('category_id'), category.get('category_name')]
-    })
-
-    const allergen = await Allergen.fetchAll().map((allergen) => {
-        return [allergen.get('allergen_id'), allergen.get('allergen_name')]
-    })
+    const brand = await dataLayer.getAllBrands()
+    const category = await dataLayer.getAllCategories()
+    const allergen = await dataLayer.getAllAllergens()
 
     const productForm = createProductForm(brand, category, allergen);
     res.render('products/create', {
@@ -35,17 +28,10 @@ router.get('/create', checkIfAuthenticated, async function(req, res){
 })
 
 router.post('/create', checkIfAuthenticated, async function(req, res){
-    const brand = await Brand.fetchAll().map((brand) => {
-        return [brand.get('brand_id'), brand.get('brand_name')]
-    })
-
-    const category = await Category.fetchAll().map((category) => {
-        return [category.get('category_id'), category.get('category_name')]
-    })
-
-    const allergen = await Allergen.fetchAll().map((allergen) => {
-        return [allergen.get('allergen_id'), allergen.get('allergen_name')]
-    })
+    
+    const brand = await dataLayer.getAllBrands()
+    const category = await dataLayer.getAllCategories()
+    const allergen = await dataLayer.getAllAllergens()
 
     const productForm = createProductForm(brand, category, allergen)
     productForm.handle(req, {
@@ -75,24 +61,11 @@ router.post('/create', checkIfAuthenticated, async function(req, res){
 })
 
 router.get('/:product_id/update', checkIfAuthenticated, async function(req,res){
-    const product = await Product.where({
-        product_id: req.params.product_id
-    }).fetch({
-        require: true,
-        withRelated: ['allergens']
-    })
-
-    const brand = await Brand.fetchAll().map((brand) => {
-        return [brand.get('brand_id'), brand.get('brand_name')]
-    })
-
-    const category = await Category.fetchAll().map((category) => {
-        return [category.get('category_id'), category.get('category_name')]
-    })
-
-    const allergen = await Allergen.fetchAll().map((allergen) => {
-        return [allergen.get('allergen_id'), allergen.get('allergen_name')]
-    })
+    
+    const product = await dataLayer.getProductById(req.params.product_id)
+    const brand = await dataLayer.getAllBrands()
+    const category = await dataLayer.getAllCategories()
+    const allergen = await dataLayer.getAllAllergens()
 
     const productForm = createProductForm(brand, category, allergen);
 
@@ -113,24 +86,11 @@ router.get('/:product_id/update', checkIfAuthenticated, async function(req,res){
 })
 
 router.post('/:product_id/update', checkIfAuthenticated, async function(req, res){
-    const product = await Product.where({
-        product_id: req.params.product_id
-    }).fetch({
-        require: true,
-        withRelated: ['allergens']
-    })
-
-    const brand = await Brand.fetchAll().map((brand) => {
-        return [brand.get('brand_id'), brand.get('brand_name')]
-    })
-
-    const category = await Category.fetchAll().map((category) => {
-        return [category.get('category_id'), category.get('category_name')]
-    })
-
-    const allergen = await Allergen.fetchAll().map((allergen) => {
-        return [allergen.get('allergen_id'), allergen.get('allergen_name')]
-    })
+    
+    const product = await dataLayer.getProductById(req.params.product_id)
+    const brand = await dataLayer.getAllBrands()
+    const category = await dataLayer.getAllCategories()
+    const allergen = await dataLayer.getAllAllergens()
 
     const productForm = createProductForm(brand, category, allergen);
     productForm.handle(req, {
