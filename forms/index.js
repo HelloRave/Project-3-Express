@@ -69,6 +69,29 @@ const createProductForm = (brands, categories, allergens) => {
     })
 }
 
+const createVariantForm = (flavour) => {
+    return forms.create({
+        flavour_id: fields.string({
+            label: 'Flavour',
+            required: true,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: flavour
+        }),
+        stock: fields.string({
+            required: true,
+            errorAfterField: true,
+            validators: [validators.integer(), validators.min(0), validators.max(999)]
+        }),
+        product_image_url: fields.string({
+            widget: widgets.hidden()
+        }),
+        product_thumbnail_url: fields.string({
+            widget: widgets.hidden()
+        })
+    })
+}
+
 const createUserForm = () => {
     return forms.create({
         email: fields.string({
@@ -108,4 +131,4 @@ const createLoginForm = () => {
     })
 }
 
-module.exports = { createProductForm, createUserForm, createLoginForm, bootstrapField }
+module.exports = { createProductForm, createUserForm, createLoginForm, createVariantForm, bootstrapField }

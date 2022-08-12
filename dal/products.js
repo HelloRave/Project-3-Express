@@ -1,4 +1,4 @@
-const {Product, Brand, Allergen, Category, Variant} = require('../models')
+const {Product, Brand, Allergen, Category, Variant, Flavour} = require('../models')
 
 // =================================================
 // =========== Product Data Access Layer ===========
@@ -59,7 +59,13 @@ const getVariantsById = async (variantId) => {
     })
 }
 
+const getAllFlavours = async () => {
+    return await Flavour.fetchAll().map((flavour) => {
+        return [flavour.get('flavour_id'), flavour.get('flavour_name')]
+    })
+}
+
 module.exports = { 
     getAllBrands, getAllAllergens, getAllCategories, getProductById, getAllProducts,
-    getVariantsByProductId, getVariantsById 
+    getVariantsByProductId, getVariantsById, getAllFlavours 
 }

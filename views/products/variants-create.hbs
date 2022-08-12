@@ -1,0 +1,8 @@
+{{#extends 'base'}}
+{{#block 'content'}}
+<form method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    {{{form}}}
+</form>
+{{/block}}
+{{/extends}}

@@ -1,5 +1,5 @@
 const express = require('express');
-const { createProductForm, bootstrapField } = require('../forms');
+const { createProductForm, bootstrapField, createVariantForm } = require('../forms');
 const { checkIfAuthenticated } = require('../middlewares');
 const dataLayer = require('../dal/products')
 const router = express.Router()
@@ -165,6 +165,20 @@ router.get('/:product_id/variants', async function(req, res){
     res.render('products/variants', {
         product: product.toJSON(),
         variants: variants.toJSON()
+    })
+})
+
+router.get('/:product_id/variants/create', async function(req, res){
+    const product = await dataLayer.getProductById(req.params.product_id)
+    const flavour = await dataLayer.getAllFlavours()
+
+    const variantForm = createVariantForm(flavour)
+    res.render('products/variants-create', {
+        product: product.toJSON(),
+        form: variantForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
     })
 })
 
