@@ -155,4 +155,17 @@ router.post('/:product_id/delete', checkIfAuthenticated, async function(req, res
     res.redirect('/products')
 })
 
+// ================================
+// ==== Product Variant Routes ====
+// ================================
+
+router.get('/:product_id/variants', async function(req, res){
+    const product = await dataLayer.getProductById(req.params.product_id)
+    const variants = await dataLayer.getVariantsByProductId(req.params.product_id)
+    res.render('products/variants', {
+        product: product.toJSON(),
+        variants: variants.toJSON()
+    })
+})
+
 module.exports = router 

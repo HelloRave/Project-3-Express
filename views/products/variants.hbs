@@ -1,0 +1,32 @@
+{{#extends 'base'}}
+{{#block 'content'}}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Variant ID</th>
+            <th>Flavour</th>
+            <th>Stock</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each variants}}
+            <tr>
+                <td>
+                    <img src="{{this.product_thumbnail_url}}" />
+                </td>
+                <td>{{../product.product_id}}</td>
+                <td>{{../product.product_name}}</td>
+                <td>{{this.variant_id}}</td>
+                <td>{{this.flavour.flavour_name}}</td>
+                <td>{{this.stock}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{/block}}
+{{/extends}}

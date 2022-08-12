@@ -1,4 +1,8 @@
-const {Product, Brand, Allergen, Category} = require('../models')
+const {Product, Brand, Allergen, Category, Variant} = require('../models')
+
+// =================================================
+// =========== Product Data Access Layer ===========
+// =================================================
 
 const getAllBrands = async () => {
     return await Brand.fetchAll().map((brand) => {
@@ -33,4 +37,29 @@ const getAllProducts = async () => {
     })
 }
 
-module.exports = { getAllBrands, getAllAllergens, getAllCategories, getProductById, getAllProducts }
+// =================================================
+// ======= Product Variant Data Access Layer =======
+// =================================================
+
+const getVariantsByProductId = async (productId) => {
+    return await Variant.where({
+        product_id: productId
+    }).fetchAll({
+        require: false, 
+        withRelated: ['product', 'flavour']
+    })
+}
+
+const getVariantsById = async (variantId) => {
+    return await Variant.where({
+        variant_id: variantId
+    }).fetchAll({
+        require: true, 
+        withRelated: ['product', 'flavour']
+    })
+}
+
+module.exports = { 
+    getAllBrands, getAllAllergens, getAllCategories, getProductById, getAllProducts,
+    getVariantsByProductId, getVariantsById 
+}

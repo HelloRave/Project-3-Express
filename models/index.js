@@ -11,6 +11,9 @@ const Product = bookshelf.model('Product', {
     },
     allergens: function(){
         return this.belongsToMany('Allergen', 'allergens_products', 'product_id', 'allergen_id')
+    },
+    variants: function(){
+        return this.hasMany('Variant', 'product_id')
     }
 })
 
@@ -38,11 +41,28 @@ const Allergen = bookshelf.model('Allergen', {
     }
 })
 
+const Variant = bookshelf.model('Variant', {
+    tableName: 'variants',
+    idAttribute: 'variant_id',
+    product: function(){
+        return this.belongsTo('Product', 'product_id')
+    },
+    flavour: function(){
+        return this.belongsTo('Flavour', 'flavour_id')
+    }
+})
 
+const Flavour = bookshelf.model('Flavour', {
+    tableName: 'flavours',
+    idAttribute: 'flavour_id',
+    variants: function(){
+        return this.hasMany('Variant', 'variant_id')
+    }
+})
 
 const User = bookshelf.model('User', {
     tableName: 'users',
     idAttribute: 'user_id'
 })
 
-module.exports = { Product, Category, Brand, Allergen, User }
+module.exports = { Product, Category, Brand, Allergen, Variant, Flavour, User }
