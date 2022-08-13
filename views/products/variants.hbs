@@ -9,9 +9,9 @@
             <th>Image</th>
             <th>Product ID</th>
             <th>Product Name</th>
-            <th>Variant ID</th>
             <th>Flavour</th>
             <th>Stock</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -22,9 +22,12 @@
                 </td>
                 <td>{{../product.product_id}}</td>
                 <td>{{../product.product_name}}</td>
-                <td>{{this.variant_id}}</td>
                 <td>{{this.flavour.flavour_name}}</td>
                 <td>{{this.stock}}</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm">Update</a>
+                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </td>
             </tr>
         {{/each}}
     </tbody>

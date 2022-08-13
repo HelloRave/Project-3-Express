@@ -24,6 +24,8 @@ app.use(cors());
 // Static folder 
 app.use(express.static('public'))
 
+hbs.registerPartials('./views/partials')
+
 // Set up wax-on
 wax.on(hbs.handlebars)
 wax.setLayoutPath('./views/layouts')
@@ -88,6 +90,7 @@ app.use(function(req,res,next){
 const landingRoutes = require('./routes/landing')
 const productsRoutes = require('./routes/products')
 const userRoutes = require('./routes/users')
+const cloudinaryRoutes = require('./routes/cloudinary')
 
 const api = {
     products: require('./routes/api/products')
@@ -97,6 +100,7 @@ const api = {
 app.use('/', landingRoutes)
 app.use('/products', productsRoutes)
 app.use('/user', userRoutes)
+app.use('/cloudinary', cloudinaryRoutes)
 
 // API routes
 app.use('/api/products', express.json(), api.products)

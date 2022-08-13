@@ -4,7 +4,7 @@ const { checkIfAuthenticated } = require('../middlewares');
 const dataLayer = require('../dal/products')
 const router = express.Router()
 
-const {Product} = require('../models')
+const {Product, Variant} = require('../models')
 
 router.get('/', async function(req, res){
     const products = await Product.collection().fetch({
@@ -179,6 +179,42 @@ router.get('/:product_id/variants/create', async function(req, res){
         cloudinaryName: process.env.CLOUDINARY_NAME,
         cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
         cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+    })
+})
+
+router.post('/:product_id/variants/create', async function(req, res){
+    const product = await dataLayer.getProductById(req.params.product_id)
+    const flavour = await dataLayer.getAllFlavours()
+
+    const variantForm = createVariantForm(flavour)
+    variantForm.handle(req, {
+        success: async function(form){
+            const variant = new Variant({
+                product_id: req.params.product_id,
+                ...form.data
+            })
+            await variant.save()
+            req.flash('success_messages', `New product variant has been created.`)
+            res.redirect(`/products/${req.params.product_id}/variants`)
+        },
+        error: function(form){
+            res.render('products/variants-create', {
+                product: product.toJSON(),
+                form: form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        },
+        empty: function(form){
+            res.render('products/variants-create', {
+                product: product.toJSON(),
+                form: form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        }
     })
 })
 
