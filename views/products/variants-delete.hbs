@@ -1,0 +1,12 @@
+{{#extends 'base'}}
+{{#block 'content'}}
+<form method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <h1>Deleting {{variant.product.product_name}}</h1>
+    <p>Flavour: {{variant.flavour.flavour_name}}</p>
+    <p>Stocks: {{variant.stock}}</p>
+    <a href="/products/{{variant.product_id}}/variants" class="btn btn-sm btn-dark btn-outline-light">Cancel</a>
+    <input type="submit" value="Delete Product" class="btn btn-sm btn-dark btn-outline-light">
+</form>
+{{/block}}
+{{/extends}}
