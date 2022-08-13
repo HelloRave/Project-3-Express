@@ -20,13 +20,13 @@
                 <td>
                     <img src="{{this.product_thumbnail_url}}" />
                 </td>
-                <td>{{../product.product_id}}</td>
+                <td>{{this.product_id}}</td>
                 <td>{{../product.product_name}}</td>
                 <td>{{this.flavour.flavour_name}}</td>
                 <td>{{this.stock}}</td>
                 <td>
-                    <a href="#" class="btn btn-primary btn-sm">Update</a>
-                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="/products/{{this.product_id}}/variants/{{this.variant_id}}/update" class="btn btn-primary btn-sm">Update</a>
+                    <a href="/products/{{this.product_id}}/variants/{{this.variant_id}}/delete" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         {{/each}}

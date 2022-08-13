@@ -162,6 +162,7 @@ router.post('/:product_id/delete', checkIfAuthenticated, async function(req, res
 router.get('/:product_id/variants', async function(req, res){
     const product = await dataLayer.getProductById(req.params.product_id)
     const variants = await dataLayer.getVariantsByProductId(req.params.product_id)
+
     res.render('products/variants', {
         product: product.toJSON(),
         variants: variants.toJSON()
@@ -209,6 +210,60 @@ router.post('/:product_id/variants/create', async function(req, res){
         empty: function(form){
             res.render('products/variants-create', {
                 product: product.toJSON(),
+                form: form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        }
+    })
+})
+
+router.get('/:product_id/variants/:variant_id/update', async function(req, res){
+    const variant = await dataLayer.getVariantsById(req.params.variant_id)
+    const flavour = await dataLayer.getAllFlavours()
+
+    const variantForm = createVariantForm(flavour)
+
+    for (field in variantForm.fields) {
+        variantForm.fields[field].value = variant.get(field)
+    }
+
+    res.render('products/variants-update', {
+        variant: variant.toJSON(),
+        form: variantForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+    })
+})
+
+router.post('/:product_id/variants/:variant_id/update', async function(req, res){
+    const variant = await dataLayer.getVariantsById(req.params.variant_id)
+    const flavour = await dataLayer.getAllFlavours()
+
+    const variantForm = createVariantForm(flavour)
+
+    variantForm.handle(req, {
+        success: async function(form){
+            variant.set(form.data)
+            variant.save()
+
+            req.flash('success_messages', `Product variant has been updated.`)
+            res.redirect(`/products/${req.params.product_id}/variants`)
+        },
+        error: function(form){
+            res.render('products/variants-update', {
+                variant: variant.toJSON(),
+                form: form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        },
+        empty: function(form){
+            res.render('products/variants-update', {
+                variant: variant.toJSON(),
                 form: form.toHTML(bootstrapField),
                 cloudinaryName: process.env.CLOUDINARY_NAME,
                 cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,

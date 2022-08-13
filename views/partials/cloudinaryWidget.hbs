@@ -1,4 +1,10 @@
 <div>
-    <a href="#" class="btn btn-primary my-3" id="upload_widget">Upload</a>
-    <img src="" style="display:none" class="img-fluid" id="uploaded_image" />
+    <label class="mt-3 d-block">Image</label>
+    {{#if variant.product_image_url}}
+    <a href="#" class="btn btn-dark btn-outline-light btn-sm mt-2 mx-auto" id="upload_widget">Change Image</a>
+    <img src="{{variant.product_image_url}}" class="mt-3 mx-auto" style="display: block; width: 100%" id="uploaded_image" />
+    {{else}}
+    <a href="#" class="btn btn-dark btn-outline-light btn-sm mt-2" id="upload_widget">Upload Image</a>
+    <img src="" class="mt-3 mx-auto" style="display: none; width: 100%" id="uploaded_image" />
+    {{/if}}
 </div>

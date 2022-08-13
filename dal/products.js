@@ -43,7 +43,7 @@ const getAllProducts = async () => {
 
 const getVariantsByProductId = async (productId) => {
     return await Variant.where({
-        product_id: productId
+        product_id: Number(productId)
     }).fetchAll({
         require: false, 
         withRelated: ['product', 'flavour']
@@ -52,8 +52,8 @@ const getVariantsByProductId = async (productId) => {
 
 const getVariantsById = async (variantId) => {
     return await Variant.where({
-        variant_id: variantId
-    }).fetchAll({
+        variant_id: Number(variantId)
+    }).fetch({
         require: true, 
         withRelated: ['product', 'flavour']
     })
