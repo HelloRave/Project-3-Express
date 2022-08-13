@@ -65,4 +65,15 @@ const User = bookshelf.model('User', {
     idAttribute: 'user_id'
 })
 
-module.exports = { Product, Category, Brand, Allergen, Variant, Flavour, User }
+const CartItem = bookshelf.model('CartItem', {
+    tableName: 'cart_items',
+    idAttribute: 'cart_item_id',
+    variant: function(){
+        return this.belongsTo('Variant', 'variant_id')
+    },
+    user: function(){
+        return this.belongsTo('User', 'user_id')
+    }
+})
+
+module.exports = { Product, Category, Brand, Allergen, Variant, Flavour, User, CartItem }
