@@ -1,17 +1,1 @@
-{
-    "cookie": {
-        "originalMaxAge": null,
-        "expires": null,
-        "httpOnly": true,
-        "path": "/"
-    },
-    "csrfSecret": "9smjjKbe50tVvEFfwNLii5uU",
-    "flash": {},
-    "__lastAccess": 1660396564039,
-    "user": {
-        "id": 3,
-        "email": "janedoe@gemail.com",
-        "firstName": "Jane ",
-        "lastName": "Doe"
-    }
-}
+{"cookie":{"originalMaxAge":null,"expires":null,"httpOnly":true,"path":"/"},"csrfSecret":"9smjjKbe50tVvEFfwNLii5uU","flash":{},"__lastAccess":1660398031219,"user":{"id":3,"email":"janedoe@gemail.com","firstName":"Jane ","lastName":"Doe"}}

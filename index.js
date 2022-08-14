@@ -91,6 +91,7 @@ const landingRoutes = require('./routes/landing')
 const productsRoutes = require('./routes/products')
 const userRoutes = require('./routes/users')
 const cloudinaryRoutes = require('./routes/cloudinary')
+const checkoutRoutes = require('./routes/api/checkout')
 
 const api = {
     products: require('./routes/api/products')
@@ -101,6 +102,7 @@ app.use('/', landingRoutes)
 app.use('/products', productsRoutes)
 app.use('/user', userRoutes)
 app.use('/cloudinary', cloudinaryRoutes)
+app.use('/api/checkout', checkoutRoutes)
 
 // API routes
 app.use('/api/products', express.json(), api.products)
