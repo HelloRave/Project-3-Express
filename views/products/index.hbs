@@ -1,5 +1,13 @@
 {{#extends 'base'}}
 {{#block 'content'}}
+
+<h1>Product Search</h1>
+<form method="GET">
+    {{{form}}}
+    <a href="/products" class="btn btn-primary btn-sm mx-2">Reset</a>
+    <input type="submit" class="btn btn-success btn-sm my-3" value="Search">
+</form>
+
 <h1>All Products</h1>
 <a href="/products/create" class="btn btn-primary my-3">Add</a>
 <table class="table">

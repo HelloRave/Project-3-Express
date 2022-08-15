@@ -92,6 +92,65 @@ const createVariantForm = (flavour) => {
     })
 }
 
+const createSearchForm = (categories, brands, allergens, flavours) => {
+    return forms.create({
+        name: fields.string({
+            required: false,
+            errorAfterField: true
+        }),
+        min_cost: fields.string({
+            label: 'Minimum cost',
+            required: false,
+            errorAfterField: true,
+            validators: [validators.integer(), validators.min(0)]
+        }),
+        max_cost: fields.string({
+            label: 'Maximum cost',
+            required: false,
+            errorAfterField: true,
+            validators: [validators.integer(), validators.min(0)]
+        }),
+        min_serving_size: fields.string({
+            label: 'Min serving',
+            required: false,
+            errorAfterField: true,
+            validators: [validators.integer(), validators.min(0)]
+        }),
+        max_serving_size: fields.string({
+            label: 'Max serving',
+            required: false,
+            errorAfterField: true,
+            validators: [validators.integer(), validators.min(0)]
+        }),
+        category_id: fields.string({
+            label: 'Category',
+            required: false,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: categories
+        }),
+        brand_id: fields.string({
+            label: 'Brand',
+            required: false,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: brands
+        }),
+        allergen: fields.string({
+            required: false,
+            errorAfterField: true,
+            widget: widgets.multipleSelect(),
+            choices: allergens
+        }),
+        flavour: fields.string({
+            required: false,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: flavours
+        })
+    })
+}
+
 const createUserForm = () => {
     return forms.create({
         email: fields.string({
@@ -131,4 +190,4 @@ const createLoginForm = () => {
     })
 }
 
-module.exports = { createProductForm, createUserForm, createLoginForm, createVariantForm, bootstrapField }
+module.exports = { createProductForm, createUserForm, createLoginForm, createVariantForm, createSearchForm, bootstrapField }

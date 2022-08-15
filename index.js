@@ -107,6 +107,6 @@ app.use('/api/checkout', checkoutRoutes)
 // API routes
 app.use('/api/products', express.json(), api.products)
 
-app.listen(3000, function(){
+app.listen(8080, function(){
     console.log('Server started')
 })

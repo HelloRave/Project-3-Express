@@ -1,5 +1,5 @@
 const express = require('express');
-const { createProductForm, bootstrapField, createVariantForm } = require('../forms');
+const { createProductForm, bootstrapField, createVariantForm, createSearchForm } = require('../forms');
 const { checkIfAuthenticated } = require('../middlewares');
 const dataLayer = require('../dal/products')
 const router = express.Router()
@@ -7,11 +7,79 @@ const router = express.Router()
 const {Product, Variant} = require('../models')
 
 router.get('/', async function(req, res){
-    const products = await Product.collection().fetch({
-        withRelated: ['brand', 'category', 'allergens']
-    });
-    res.render('products/index', {
-        products: products.toJSON()
+    
+    const brand = await dataLayer.getAllBrands()
+    brand.unshift([0, '--- Select Brand ---'])
+    const category = await dataLayer.getAllCategories()
+    category.unshift([0, '--- Select Category ---'])
+    const allergen = await dataLayer.getAllAllergens()
+    allergen.unshift([0, '--- Select Allergen ---'])
+    const flavour = await dataLayer.getAllFlavours()
+    flavour.unshift([0, '--- Select Flavour ---'])
+
+    const searchForm = createSearchForm(category, brand, allergen, flavour)
+    let query = Product.collection()
+
+    searchForm.handle(req, {
+        success: async function(form){
+            if (form.data.name) {
+                query.where('product_name', 'like', `%${form.data.name}%`)
+            }
+            if (form.data.min_cost) {
+                query.where('cost', '>=', form.data.min_cost)
+            }
+            if (form.data.max_cost) {
+                query.where('cost', '<=', form.data.max_cost)
+            }
+            if (form.data.min_serving_size) {
+                query.where('cost', '>=', form.data.min_serving_size)
+            }
+            if (form.data.max_serving_size) {
+                query.where('cost', '<=', form.data.max_serving_size)
+            }
+            if (form.data.category_id && form.data.category_id != "0") {
+                query.where('category_id', '=', form.data.category_id)
+            }
+            if (form.data.brand_id && form.data.brand_id != "0") {
+                query.where('brand_id', '=', form.data.brand_id)
+            }
+            if (form.data.allergen && form.data.allergen_id != "0") {
+                query.query('join', 'allergens_products', 'products.product_id', 'allergens_products.product_id')
+                    .where('allergen_id', 'in', form.data.allergen.split(','))
+            }
+            // if (form.data.flavour){
+
+            // }
+            const products = await query.fetch({
+                withRelated: ['brand', 'category', 'allergens']
+            })
+
+            res.render('products/index', {
+                products: products.toJSON(),
+                form: form.toHTML(bootstrapField)
+            })
+
+        },
+        error: async function(form){
+            const products = await query.fetch({
+                withRelated: ['brand', 'category', 'allergens']
+            })
+
+            res.render('products/index', {
+                products: products.toJSON(),
+                form: form.toHTML(bootstrapField)
+            })
+        },
+        empty: async function(){
+            const products = await query.fetch({
+                withRelated: ['brand', 'category', 'allergens']
+            })
+
+            res.render('products/index', {
+                products: products.toJSON(),
+                form: searchForm.toHTML(bootstrapField)
+            })
+        }
     })
 })
 
