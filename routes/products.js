@@ -32,10 +32,10 @@ router.get('/', async function(req, res){
                 query.where('cost', '<=', form.data.max_cost)
             }
             if (form.data.min_serving_size) {
-                query.where('cost', '>=', form.data.min_serving_size)
+                query.where('serving_size', '>=', form.data.min_serving_size)
             }
             if (form.data.max_serving_size) {
-                query.where('cost', '<=', form.data.max_serving_size)
+                query.where('serving_size', '<=', form.data.max_serving_size)
             }
             if (form.data.category_id && form.data.category_id != "0") {
                 query.where('category_id', '=', form.data.category_id)
@@ -47,11 +47,12 @@ router.get('/', async function(req, res){
                 query.query('join', 'allergens_products', 'products.product_id', 'allergens_products.product_id')
                     .where('allergen_id', 'in', form.data.allergen.split(','))
             }
-            // if (form.data.flavour){
-
-            // }
+            if (form.data.flavour && form.data.flavour != "0") {
+                query.query('join', 'variants', 'products.product_id', 'variants.product_id')
+                    .where('flavour_id', '=', form.data.flavour)
+            }
             const products = await query.fetch({
-                withRelated: ['brand', 'category', 'allergens']
+                withRelated: ['brand', 'category', 'allergens', 'variants']
             })
 
             res.render('products/index', {
