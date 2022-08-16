@@ -49,6 +49,12 @@ const Variant = bookshelf.model('Variant', {
     },
     flavour: function(){
         return this.belongsTo('Flavour', 'flavour_id')
+    },
+    cartItems: function(){
+        return this.hasMany('CartItem', 'variant_id')
+    },
+    orderItems: function(){
+        return this.hasMany('OrderItem', 'variant_id')
     }
 })
 
@@ -62,7 +68,13 @@ const Flavour = bookshelf.model('Flavour', {
 
 const User = bookshelf.model('User', {
     tableName: 'users',
-    idAttribute: 'user_id'
+    idAttribute: 'user_id',
+    cartItems: function(){
+        return this.hasMany('CartItem', 'user_id')
+    },
+    orders: function(){
+        return this.hasMany('Order', 'user_id')
+    }
 })
 
 const CartItem = bookshelf.model('CartItem', {
@@ -76,4 +88,51 @@ const CartItem = bookshelf.model('CartItem', {
     }
 })
 
-module.exports = { Product, Category, Brand, Allergen, Variant, Flavour, User, CartItem }
+const OrderItem = bookshelf.model('OrderItem', {
+    tableName: 'order_items',
+    idAttribute: 'order_item_id',
+    variant: function(){
+        return this.belongsTo('Variant', 'variant_id')
+    },
+    order: function(){
+        return this.belongsTo('Order', 'order_id')
+    }
+})
+
+const Order = bookshelf.model('Order', {
+    tableName: 'orders',
+    idAttribute: 'order_id',
+    orderItems: function(){
+        return this.hasMany('OrderItem', 'order_id')
+    },
+    status: function(){
+        return this.belongsTo('Status', 'status_id')
+    },
+    address: function(){
+        return this.belongsTo('Address', 'address_id')
+    },
+    user: function(){
+        return this.belongsTo('User', 'user_id')
+    }
+})
+
+const Status = bookshelf.model('Status', {
+    tableName: 'statuses',
+    idAttribute: 'status_id',
+    orders: function(){
+        return this.hasMany('Order', 'order_id')
+    }
+})
+
+const Address = bookshelf.model('Address', {
+    tableName: 'addresses',
+    idAttribute: 'address_id',
+    orders: function(){
+        return this.hasMany('Order', 'order_id')
+    }
+})
+
+module.exports = { 
+    Product, Category, Brand, Allergen, Variant, Flavour, 
+    User, CartItem, OrderItem, Order, Status, Address 
+}
