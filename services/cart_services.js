@@ -79,6 +79,14 @@ class CartServices {
             newQuantity
         )
     }
+
+    // Checkout cart items on successful payment
+    async checkoutCart(stripeSession){
+        const cartItems = JSON.parse(stripeSession.metadata.orders)
+        for (let cartItem of cartItems) {
+            await cartDataLayer.removeCartItem(this.user_id, cartItem['variant_id'])
+        }
+    }
 }
 
 

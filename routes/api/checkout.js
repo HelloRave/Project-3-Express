@@ -69,6 +69,9 @@ router.post('/process_payment', express.raw({
 
     if (event.type === 'checkout.session.completed') {
         let stripeSession = event.data.object
+        console.log(stripeSession)
+        let cartServices = new CartServices(stripeSession.metadata.user_id)
+        await cartServices.checkoutCart(stripeSession)
         // To continue
     }
 
