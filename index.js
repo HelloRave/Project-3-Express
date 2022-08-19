@@ -94,7 +94,8 @@ const cloudinaryRoutes = require('./routes/cloudinary')
 const checkoutRoutes = require('./routes/api/checkout')
 
 const api = {
-    products: require('./routes/api/products')
+    products: require('./routes/api/products'),
+    users: require('./routes/api/users')
 }
 
 // Use routes
@@ -106,6 +107,7 @@ app.use('/api/checkout', checkoutRoutes)
 
 // API routes
 app.use('/api/products', express.json(), api.products)
+app.use('/api/users', express.json(), api.users)
 
 app.listen(8080, function(){
     console.log('Server started')
