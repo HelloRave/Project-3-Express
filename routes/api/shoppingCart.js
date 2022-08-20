@@ -34,7 +34,7 @@ router.post('/:variant_id/add', async function(req, res){
     
 })
 
-router.get('/:variant_id/update/quantity', async function(req, res){
+router.post('/:variant_id/update/quantity', async function(req, res){
     try {
         let user = req.user
         let cartServices = new CartServices(user.user_id)
@@ -55,7 +55,7 @@ router.get('/:variant_id/update/quantity', async function(req, res){
     }
 })
 
-router.get('/:variant_id/delete', async function(req, res){
+router.post('/:variant_id/delete', async function(req, res){
     try {
         let user = req.user
         let cartServices = new CartServices(user.user_id)

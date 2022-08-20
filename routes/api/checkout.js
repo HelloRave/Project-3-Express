@@ -32,6 +32,8 @@ router.get('/', checkIfAuthenticatedJWT, async function(req, res){
         })
     }
 
+    console.log(lineItems, meta)
+
     // 2. Create stripe payment
     let metaData = JSON.stringify(meta)
     const payment = {
@@ -50,6 +52,7 @@ router.get('/', checkIfAuthenticatedJWT, async function(req, res){
         sessionId: stripeSession.id,
         publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
     })
+
 })
 
 // Webhook for Stripe

@@ -1,0 +1,8 @@
+<script src="https://js.stripe.com/v3"></script>
+<script>
+    // create a stripe object with our publishable key as arugment
+    const stripe = Stripe("{{publishableKey}}");
+    stripe.redirectToCheckout({
+        sessionId: "{{sessionId}}"
+    })
+</script>

@@ -78,6 +78,7 @@ class CartServices {
             variantId,
             newQuantity
         )
+        return true
     }
 
     // Checkout cart items on successful payment

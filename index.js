@@ -10,7 +10,8 @@ require('dotenv').config()
 const session = require('express-session')
 const flash = require('connect-flash')
 const FileStore = require('session-file-store')(session)
-const csrf = require('csurf')
+const csrf = require('csurf');
+const { checkIfAuthenticatedJWT } = require('./middlewares');
 
 // Create instance of express app
 let app = express()
@@ -98,6 +99,7 @@ const admin = {
 const api = {
     products: require('./routes/api/products'),
     users: require('./routes/api/users'),
+    cart: require('./routes/api/shoppingCart'),
     checkout: require('./routes/api/checkout')
 }
 
@@ -110,6 +112,7 @@ app.use('/cloudinary', admin.cloudinary)
 // API routes
 app.use('/api/products', express.json(), api.products)
 app.use('/api/users', express.json(), api.users)
+app.use('/api/cart', express.json(), checkIfAuthenticatedJWT, api.cart)
 app.use('/api/checkout', api.checkout)
 
 app.listen(8080, function(){
