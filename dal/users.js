@@ -10,10 +10,10 @@ const getHashedPassword = (password) => {
 
 const generateAccessToken = (user, tokenSecret, time) => {
     return jwt.sign({
-        user_id: user.get('user_id'),
-        email: user.get('email'),
-        first_name: user.get('first_name'),
-        last_name: user.get('last_name')
+        user_id: user.user_id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name
     }, tokenSecret, {
         expiresIn: time
     })

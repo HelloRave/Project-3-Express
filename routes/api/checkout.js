@@ -1,4 +1,5 @@
 const express = require('express')
+const { checkIfAuthenticatedJWT } = require('../../middlewares')
 const CartServices = require('../../services/cart_services')
 const router = express.Router()
 
@@ -6,7 +7,7 @@ const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2020-08-27"
 })
 
-router.get('/', async function(req, res){
+router.get('/', checkIfAuthenticatedJWT, async function(req, res){
     const user = req.user
     const cart = new CartServices(user.user_id)
     const cartItems = await cart.getCart()
@@ -51,6 +52,7 @@ router.get('/', async function(req, res){
     })
 })
 
+// Webhook for Stripe
 router.post('/process_payment', express.raw({
     type: 'application/json'
 }), async function(req, res){
