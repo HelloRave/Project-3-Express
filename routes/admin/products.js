@@ -1,10 +1,10 @@
 const express = require('express');
-const { createProductForm, bootstrapField, createVariantForm, createSearchForm } = require('../forms');
-const { checkIfAuthenticated } = require('../middlewares');
-const dataLayer = require('../dal/products')
+const { createProductForm, bootstrapField, createVariantForm, createSearchForm } = require('../../forms');
+const { checkIfAuthenticated } = require('../../middlewares');
+const dataLayer = require('../../dal/products')
 const router = express.Router()
 
-const {Product, Variant} = require('../models')
+const {Product, Variant} = require('../../models')
 
 router.get('/', async function(req, res){
     

@@ -87,27 +87,30 @@ app.use(function(req,res,next){
 })
 
 // Import in routes
-const landingRoutes = require('./routes/landing')
-const productsRoutes = require('./routes/products')
-const userRoutes = require('./routes/users')
-const cloudinaryRoutes = require('./routes/cloudinary')
-const checkoutRoutes = require('./routes/api/checkout')
+const admin = {
+    landing: require('./routes/admin/landing'),
+    products: require('./routes/admin/products'),
+    users: require('./routes/admin/users'),
+    login: require('./routes/admin/admin_login'),
+    cloudinary: require('./routes/admin/cloudinary')
+}
 
 const api = {
     products: require('./routes/api/products'),
-    users: require('./routes/api/users')
+    users: require('./routes/api/users'),
+    checkout: require('./routes/api/checkout')
 }
 
 // Use routes
-app.use('/', landingRoutes)
-app.use('/products', productsRoutes)
-app.use('/user', userRoutes)
-app.use('/cloudinary', cloudinaryRoutes)
-app.use('/api/checkout', checkoutRoutes)
+app.use('/', admin.landing)
+app.use('/products', admin.products)
+app.use('/admin', admin.login)
+app.use('/cloudinary', admin.cloudinary)
 
 // API routes
 app.use('/api/products', express.json(), api.products)
 app.use('/api/users', express.json(), api.users)
+app.use('/api/checkout', api.checkout)
 
 app.listen(8080, function(){
     console.log('Server started')

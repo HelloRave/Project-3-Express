@@ -51,5 +51,8 @@ router.post('/refresh', async function(req,res){
     // Refresh token
 })
 
+router.post('/logout', async function(req, res){
+    // Blacklist token
+})
 
 module.exports = router 

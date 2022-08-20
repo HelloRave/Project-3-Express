@@ -74,6 +74,17 @@ const User = bookshelf.model('User', {
     },
     orders: function(){
         return this.hasMany('Order', 'user_id')
+    },
+    userRole: function(){
+        return this.belongsTo('UserRole', 'user_role_id')
+    }
+})
+
+const UserRole = bookshelf.model('UserRole', {
+    tableName: 'user_roles',
+    idAttribute: 'user_role_id',
+    users: function(){
+        return this.hasMany('User', 'user_id')
     }
 })
 
@@ -134,5 +145,6 @@ const Address = bookshelf.model('Address', {
 
 module.exports = { 
     Product, Category, Brand, Allergen, Variant, Flavour, 
-    User, CartItem, OrderItem, Order, Status, Address 
+    User, CartItem, OrderItem, Order, Status, Address,
+    UserRole 
 }

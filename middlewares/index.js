@@ -5,7 +5,7 @@ const checkIfAuthenticated = (req, res, next) => {
         next()
     } else {
         req.flash('error_messages', 'You need to sign in to access')
-        res.redirect('/user/login')
+        res.redirect('/admin/login')
     }
 }
 

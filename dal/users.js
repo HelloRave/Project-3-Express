@@ -49,6 +49,7 @@ const verifyUser = async (email, password) => {
         if (user.get('password') === getHashedPassword(password)) {
             const userSession = {
                 id: user.get('user_id'),
+                role_id: user.get('user_role_id'),
                 email: user.get('email'),
                 firstName: user.get('first_name'),
                 lastName: user.get('last_name')
