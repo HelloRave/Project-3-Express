@@ -13,15 +13,23 @@ class OrderServices {
         return await orderDataLayer.getOrderItems(this.order_id)
     }
 
-    async addOrder(){
+    async addOrder(stripeSession){
         const address = await orderDataLayer.createAddress(
-
+            stripeSession.customer_details.address
         )
 
         const order = await orderDataLayer.createOrder(
-
+            stripeSession, address.toJSON().address_id
         )
 
+        const orderItems = JSON.parse(stripeSession.metadata.orders)
+        for (let orderItem of orderItems) {
+            await orderDataLayer.createOrderItem(
+                orderItem['quantity'],
+                orderItem['variant_id'],
+                order.toJSON().order_id
+            )
+        }
     }
 
     async deleteOrder(){

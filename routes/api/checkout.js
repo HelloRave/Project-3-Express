@@ -1,6 +1,7 @@
 const express = require('express')
 const { checkIfAuthenticatedJWT } = require('../../middlewares')
 const CartServices = require('../../services/cart_services')
+const OrderServices = require('../../services/order_services')
 const router = express.Router()
 
 const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
@@ -42,6 +43,7 @@ router.get('/', checkIfAuthenticatedJWT, async function(req, res){
         success_url: process.env.STRIPE_SUCCESS_URL + '?sessionsId={CHECKOUT_SESSION_ID}',
         cancel_url: process.env.STRIPE_ERROR_URL,
         metadata: {
+            user_id: user.user_id,
             orders: metaData
         }
     }
@@ -75,9 +77,12 @@ router.post('/process_payment', express.raw({
     if (event.type === 'checkout.session.completed') {
         let stripeSession = event.data.object
         console.log(stripeSession)
-        let cartServices = new CartServices(stripeSession.metadata.user_id)
+        
+        const cartServices = new CartServices(stripeSession.metadata.user_id)
         await cartServices.checkoutCart(stripeSession)
-        // To continue
+
+        const orderServices = new OrderServices()
+        await orderServices.addOrder(stripeSession)
     }
 
     res.send({
