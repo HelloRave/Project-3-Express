@@ -91,6 +91,7 @@ app.use(function(req,res,next){
 const admin = {
     landing: require('./routes/admin/landing'),
     products: require('./routes/admin/products'),
+    orders: require('./routes/admin/orders'),
     users: require('./routes/admin/users'),
     login: require('./routes/admin/admin_login'),
     cloudinary: require('./routes/admin/cloudinary')
@@ -100,12 +101,14 @@ const api = {
     products: require('./routes/api/products'),
     users: require('./routes/api/users'),
     cart: require('./routes/api/shoppingCart'),
-    checkout: require('./routes/api/checkout')
+    checkout: require('./routes/api/checkout'),
+    orders: require('./routes/api/orders')
 }
 
 // Use routes
 app.use('/', admin.landing)
 app.use('/products', admin.products)
+app.use('/orders', admin.orders)
 app.use('/admin', admin.login)
 app.use('/cloudinary', admin.cloudinary)
 
@@ -114,6 +117,7 @@ app.use('/api/products', express.json(), api.products)
 app.use('/api/users', express.json(), api.users)
 app.use('/api/cart', express.json(), checkIfAuthenticatedJWT, api.cart)
 app.use('/api/checkout', api.checkout)
+app.use('/api/orders', express.json(), checkIfAuthenticatedJWT, api.orders)
 
 app.listen(8080, function(){
     console.log('Server started')

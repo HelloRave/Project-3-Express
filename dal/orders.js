@@ -5,7 +5,16 @@ const getOrderByOrderId = async (orderId) => {
         order_id: orderId
     }).fetch({
         require: false,
-        withRelated: ['user', 'status', 'address']
+        withRelated: ['user', 'status', 'address', 'orderItems']
+    })
+}
+
+const getOrderByUserId = async (userId) => {
+    return await Order.where({
+        user_id: userId
+    }).fetch({
+        require: false,
+        withRelated: ['user', 'status', 'address', 'orderItems']
     })
 }
 
@@ -23,6 +32,7 @@ const getAllStatuses = async () => {
         return [status.get('status_id'), status.get('status_name')]
     })
 }
+
 const updateOrderStatus = async (orderId, newStatus) => {
     const order = await getOrderByOrderId(orderId)
     order.set('status_id', newStatus)
@@ -31,7 +41,7 @@ const updateOrderStatus = async (orderId, newStatus) => {
 }
 
 const createAddress = async(address) => {
-    const address = new Address({
+    const customerAddress = new Address({
         address_line_1: address.line1, //stripeSession.customer_details.address
         address_line_2: address.line2,
         country: address.country,
@@ -39,8 +49,18 @@ const createAddress = async(address) => {
         city: address.city,
         postal_code: address.postal_code  
     })
-    await address.save()
-    return address
+    await customerAddress.save()
+    return customerAddress
+}
+
+const deleteAddress = async(addressId) => {
+    const customerAddress = await Address.where({
+        address_id: addressId
+    }).fetch({
+        require: false
+    })
+
+    await customerAddress.destroy()
 }
 
 const createOrder = async(stripeSession, addressId) => {
@@ -57,6 +77,11 @@ const createOrder = async(stripeSession, addressId) => {
     return order
 }
 
+const deleteOrder = async(orderId) => {
+    const order = await getOrderByOrderId(orderId)
+    await order.destroy()
+}
+
 const createOrderItem = async(quantity, variant_id, order_id) => {
     const orderItem = new OrderItem({
         quantity, variant_id, order_id
@@ -65,4 +90,13 @@ const createOrderItem = async(quantity, variant_id, order_id) => {
     return orderItem
 }
 
-module.exports = { getOrderByOrderId, getOrderItems, getAllStatuses, updateOrderStatus, createAddress, createOrder, createOrderItem }
+const deleteOrderItem = async(userId) => {
+    const orderItem = await getOrderItems(userId)
+    await orderItem.destroy()
+}
+
+module.exports = { 
+    getOrderByOrderId, getOrderItems, getOrderByUserId,
+    getAllStatuses, updateOrderStatus, createAddress, deleteAddress, 
+    createOrder, deleteOrder, createOrderItem, deleteOrderItem 
+}
