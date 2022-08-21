@@ -129,11 +129,23 @@ router.post('/:order_id/status/update', async function(req, res){
 })
 
 router.get('/:order_id/delete', async function(req, res){
-    
+    const orderServices = new OrderServices(req.params.order_id)
+    const order = await orderServices.getOrder()
+    if (order.toJSON().status_id === 3 || order.toJSON().status_id === 4) {
+        req.flash('error_messages', 'Completed orders cannot be deleted.')
+        res.redirect('/orders')
+    } else {
+        res.render('orders/delete', {
+            order: order.toJSON()
+        })
+    }
 })
 
 router.post('/:order_id/delete', async function(req, res){
-
+    const orderServices = new OrderServices(req.params.order_id)
+    await orderServices.deleteOrder()
+    req.flash('success_messages', 'Order has been deleted.')
+    res.redirect('/orders')
 })
 
 module.exports = router

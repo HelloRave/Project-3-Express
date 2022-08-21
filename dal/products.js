@@ -27,13 +27,13 @@ const getProductById = async (productId) => {
         product_id: Number(productId)
     }).fetch({
         require: true,
-        withRelated: ['brand', 'category', 'allergens']
+        withRelated: ['brand', 'category', 'allergens', 'variants']
     })
 }
 
 const getAllProducts = async () => {
     return await Product.fetchAll({
-        withRelated: ['brand', 'category', 'allergens']
+        withRelated: ['brand', 'category', 'allergens', 'variants']
     })
 }
 
