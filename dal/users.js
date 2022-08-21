@@ -66,14 +66,17 @@ const verifyUser = async (email, password) => {
 }
 
 const getAllUsers = async() => {
-    return await User.fetchAll()
+    return await User.fetchAll({
+        withRelated: ['userRole']
+    })
 }
 
 const getUser = async(userId) => {
     return await User.where({
         user_id: userId
     }).fetch({
-        require: true
+        require: true,
+        withRelated: ['userRole']
     })
 }
 

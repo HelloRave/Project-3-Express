@@ -190,4 +190,50 @@ const createLoginForm = () => {
     })
 }
 
-module.exports = { createProductForm, createUserForm, createLoginForm, createVariantForm, createSearchForm, bootstrapField }
+const createOrderSearchForm = (statuses) => {
+    return forms.create({
+        order_id: fields.string({
+            label: 'Order ID',
+            required: false,
+            errorAfterField: true
+        }),
+        email: fields.email({
+            required: false,
+            errorAfterField: true,
+            widget: widgets.email()
+        }),
+        order_date: fields.date({
+            label: 'Order Date',
+            required: false,
+            errorAfterField: true,
+            widget: widgets.date()
+        }),
+        status_id: fields.string({
+            label: 'Status',
+            required: false,
+            errorAfterField: true,
+            widget: widgets.select(),
+            choices: statuses
+        })
+    })
+}
+
+const createStatusForm = (statuses) => {
+    return forms.create({
+        status_id: fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['d-none']
+            },
+            widget: widgets.select(),
+            choices: statuses
+        })
+    })
+}
+
+module.exports = { 
+    createProductForm, createUserForm, createLoginForm, createVariantForm, 
+    createSearchForm, createOrderSearchForm, createStatusForm,
+    bootstrapField 
+}
