@@ -33,7 +33,7 @@ const getProductById = async (productId) => {
 
 const getAllProducts = async () => {
     return await Product.fetchAll({
-        withRelated: ['brand', 'category', 'allergens', 'variants']
+        withRelated: ['brand', 'category', 'allergens', 'variants', 'variants.flavour']
     })
 }
 
