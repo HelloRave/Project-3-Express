@@ -56,6 +56,11 @@ app.use(function(req,res,next){
 
 // Register Flash messages
 app.use(flash())
+app.use(function(req, res, next){
+    res.locals.success_messages = req.flash('success_messages');
+    res.locals.error_messages = req.flash('error_messages');
+    next();
+})
 
 app.use(function(req, res, next){
     if (req.csrfToken) {
@@ -72,13 +77,6 @@ app.use((err, req, res, next) => {
     } else {
         next()
     }
-})
-
-// Register Flash middleware
-app.use(function(req, res, next){
-    res.locals.success_messages = req.flash('success_messages');
-    res.locals.error_messages = req.flash('error_messages');
-    next();
 })
 
 // Share the user data with hbs files 

@@ -61,14 +61,48 @@
                 <td>
                     <a href="/products/{{this.product_id}}/variants" class="btn btn-primary btn-sm">Variants</a>
                     <a href="/products/{{this.product_id}}/update" class="btn btn-primary btn-sm">Update</a>
-                    <a href="/products/{{this.product_id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="#" 
+                       class="delete-btn btn btn-danger btn-sm"
+                       data-csrf-token="{{csrfToken}}"
+                       data-product-id="{{this.product_id}}"
+                       data-product-name="{{this.product_name}}">
+                       Delete
+                    </a>
                 </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 </div>
+{{/block}}
 
+{{#block 'js'}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    let deleteBtns = document.querySelectorAll('.delete-btn');
+    for (let btn of deleteBtns) {
+        btn.addEventListener('click', async function (event) {
+            event.preventDefault();
 
+            const result = await Swal.fire({
+                title: `Are you sure you want to delete ${event.target.dataset.productName}`,
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirm Delete'
+            })
+            if (result.isConfirmed) {
+                const form = document.createElement('form')
+                form.method = 'POST'
+                form.action = `/products/${event.target.dataset.productId}/delete`
+                document.querySelector('body').appendChild(form)
+                form.innerHTML = `{{> csrfToken}}`
+                form.submit();
+            }
+        })
+    }
+</script>
 {{/block}}
 {{/extends}}
