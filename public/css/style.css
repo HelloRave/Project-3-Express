@@ -1,4 +1,13 @@
+.login-form-div{
+    max-height: 90vh;
+}
+
 .login-form{
     max-width: 500px;
     border: 1px solid red;
+}
+
+.form-group{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
