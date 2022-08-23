@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/login', async function(req, res){
     const loginForm = createLoginForm();
-    res.render('users/login', {
+    res.render('landing/login', {
         form: loginForm.toHTML(bootstrapField)
     })
 })
@@ -26,13 +26,13 @@ router.post('/login', async function(req, res){
         },
         error: function(form){
             req.flash('error_messages', 'Please fill in form again')
-            res.render('users/login', {
+            res.render('landing/login', {
                 form: form.toHTML(bootstrapField)
             })
         },
         empty: function(form){
             req.flash('error_messages', 'Please fill in form again')
-            res.render('users/login', {
+            res.render('landing/login', {
                 form: form.toHTML(bootstrapField)
             })
         }

@@ -2,7 +2,11 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/', function(req, res){
-    res.render('landing/index')
+    if (req.session.user) {
+        res.redirect('/orders')
+    } else {
+        res.redirect('/admin/login')
+    }
 })
 
 module.exports = router

@@ -1,7 +1,7 @@
 {{#extends 'base'}}
 {{#block 'content'}}
 <form method="POST">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    {{> csrfToken}}
     {{{form}}}
     {{> cloudinaryWidget}}
     <input type="submit" class="btn btn-primary btn-sm my-3" value="Update">

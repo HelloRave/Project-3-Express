@@ -10,77 +10,66 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Project 3</title>
+    {{!-- Font Awesome Icons --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+    <title>Title of Proj</title>
 </head>
 
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand ms-2" href="#">BRAND HERE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav me-auto ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
+                        <a class="nav-link active text-center d-flex flex-column" aria-current="page" href="/orders">
+                            <i class="fa-solid fa-box-archive"></i>
+                            Orders
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        <a class="nav-link text-center d-flex flex-column" href="/products">
+                            <i class="fa-solid fa-list"></i>
+                            Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-center d-flex flex-column" href="#">
+                            <i class="fa-solid fa-user-gear"></i>
+                            Users
+                        </a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-                <div>
-                    {{#if user}}
-                        Hi, {{user.firstName}} {{user.lastName}}
-
-                        <a href="/admin/logout" class="ms-3 btn btn-primary btn-sm">Logout</a>
-
-                        {{else}}
-                        Hi stranger
-                    {{/if}}
-                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                {{#if user}}
+                <span class="mx-2">Hi, {{user.firstName}} {{user.lastName}}</span>
+                {{/if}}
+                <a href="/admin/logout" class="btn btn-outline-dark btn-sm">Logout</a>
             </div>
         </div>
     </nav>
 
     {{#if success_messages}}
-        {{#each success_messages}}
-        <div class="alert alert-success">
-            {{this}}
-        </div>
-        {{/each}}
+    {{#each success_messages}}
+    <div class="alert alert-success">
+        {{this}}
+    </div>
+    {{/each}}
     {{/if}}
 
     {{#if error_messages}}
-        {{#each error_messages}}
-        <div class="alert alert-danger">
-            {{this}}
-        </div>
-        {{/each}}
+    {{#each error_messages}}
+    <div class="alert alert-danger">
+        {{this}}
+    </div>
+    {{/each}}
     {{/if}}
 
     {{#block 'content'}}

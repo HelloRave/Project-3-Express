@@ -1,7 +1,7 @@
 {{#extends 'base'}}
 {{#block 'content'}}
 <form method="POST">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    {{> csrfToken}}
     <h1>Deleting {{variant.product.product_name}}</h1>
     <p>Flavour: {{variant.flavour.flavour_name}}</p>
     <p>Stocks: {{variant.stock}}</p>
