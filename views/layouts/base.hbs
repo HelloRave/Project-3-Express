@@ -13,11 +13,15 @@
     {{!-- Font Awesome Icons --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 
+    {{!-- Custon CSS --}}
+    <link rel="stylesheet" href="/css/style.css">
+
     <title>Title of Proj</title>
 </head>
 
 <body>
 
+    {{#if user}}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand ms-2" href="#">BRAND HERE</a>
@@ -48,26 +52,35 @@
                 </ul>
             </div>
             <div class="d-flex align-items-center">
-                {{#if user}}
                 <span class="mx-2">Hi, {{user.firstName}} {{user.lastName}}</span>
-                {{/if}}
                 <a href="/admin/logout" class="btn btn-outline-dark btn-sm">Logout</a>
             </div>
         </div>
     </nav>
+    {{else}}
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand me-auto ms-auto" href="#">BRAND HERE</a>
+        </div>
+    </nav>
+    {{/if}}
 
     {{#if success_messages}}
     {{#each success_messages}}
-    <div class="alert alert-success">
-        {{this}}
+    <div class="container my-3">
+        <div class="alert alert-success">
+            {{this}}
+        </div>
     </div>
     {{/each}}
     {{/if}}
 
     {{#if error_messages}}
     {{#each error_messages}}
-    <div class="alert alert-danger">
-        {{this}}
+    <div class="container my-3">
+        <div class="alert alert-danger">
+            {{this}}
+        </div>
     </div>
     {{/each}}
     {{/if}}
