@@ -1,11 +1,15 @@
 {{#extends 'base'}}
 {{#block 'content'}}
-<form method="POST">
-    {{> csrfToken}}
-    {{{form}}}
-    {{> cloudinaryWidget}}
-    <input type="submit" class="btn btn-primary btn-sm my-3" value="Update">
-</form>
+<div class="container my-4 p-3 w-50 border">
+    <h3>Updating: {{variant.product.product_name}}</h3>
+    <form method="POST">
+        {{> csrfToken}}
+        {{{form}}}
+        {{> cloudinaryWidget}}
+        <a href="/products/{{variant.product.product_id}}/variants" class="btn btn-outline-secondary me-2 my-3">Cancel</a>
+        <input type="submit" class="btn btn-outline-primary my-3" value="Update">
+    </form>
+</div>
 {{/block}}
 {{/extends}}
 
