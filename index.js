@@ -117,6 +117,6 @@ app.use('/api/cart', express.json(), checkIfAuthenticatedJWT, api.cart)
 app.use('/api/checkout', api.checkout)
 app.use('/api/orders', express.json(), checkIfAuthenticatedJWT, api.orders)
 
-app.listen(8080, function(){
+app.listen(process.env.PORT || 8080, function(){
     console.log('Server started')
 })
