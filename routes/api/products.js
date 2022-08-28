@@ -63,6 +63,42 @@ router.post('/', async function(req, res){
     }
 })
 
+router.get('/brands', async function(req, res){
+    try {
+        const brands = await productDataLayer.getAllBrands()
+        res.send(brands)
+    } catch {
+        res.sendStatus(500)
+    }
+})
+
+router.get('/categories', async function(req, res){
+    try {
+        const categories = await productDataLayer.getAllCategories()
+        res.send(categories)
+    } catch {
+        res.sendStatus(500)
+    }
+})
+
+router.get('/allergens', async function(req, res){
+    try {
+        const allergens = await productDataLayer.getAllAllergens()
+        res.send(allergens)
+    } catch {
+        res.sendStatus(500)
+    }
+})
+
+router.get('/flavours', async function(req, res){
+    try {
+        const flavours = await productDataLayer.getAllFlavours()
+        res.send(flavours)
+    } catch {
+        res.sendStatus(500)
+    }
+})
+
 router.get('/:product_id/variants', async function(req, res){
     try {
         const product = await productDataLayer.getProductById(req.params.product_id)
