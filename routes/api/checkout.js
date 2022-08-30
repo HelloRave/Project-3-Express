@@ -33,15 +33,13 @@ router.get('/', checkIfAuthenticatedJWT, async function(req, res){
         })
     }
 
-    console.log(lineItems, meta)
-
     // 2. Create stripe payment
     let metaData = JSON.stringify(meta)
     const payment = {
         payment_method_types: ['card'],
         line_items: lineItems,
         success_url: process.env.STRIPE_SUCCESS_URL + '?sessionsId={CHECKOUT_SESSION_ID}',
-        cancel_url: process.env.STRIPE_ERROR_URL,
+        cancel_url: process.env.STRIPE_CANCEL_URL,
         metadata: {
             user_id: user.user_id,
             orders: metaData
@@ -76,7 +74,7 @@ router.post('/process_payment', express.raw({
 
     if (event.type === 'checkout.session.completed') {
         let stripeSession = event.data.object
-        console.log(stripeSession)
+        // console.log(stripeSession)
         
         const cartServices = new CartServices(stripeSession.metadata.user_id)
         await cartServices.checkoutCart(stripeSession)
