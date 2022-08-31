@@ -10,7 +10,7 @@ const getOrderByOrderId = async (orderId) => {
 }
 
 const getOrderByUserId = async (userId) => {
-    return await Order.where({
+    return await Order.collection().where({
         user_id: userId
     }).fetch({
         require: false,

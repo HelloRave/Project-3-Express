@@ -40,6 +40,9 @@ router.get('/', checkIfAuthenticatedJWT, async function(req, res){
         line_items: lineItems,
         success_url: process.env.STRIPE_SUCCESS_URL + '?sessionsId={CHECKOUT_SESSION_ID}',
         cancel_url: process.env.STRIPE_CANCEL_URL,
+        shipping_address_collection: {
+            allowed_countries: ["SG"]
+        },
         metadata: {
             user_id: user.user_id,
             orders: metaData
