@@ -103,7 +103,7 @@ router.get('/:order_id/items', async function(req, res){
     statusForm.fields.status_id.value = order.get('status_id')
 
     console.log(orderItems.toJSON())
-    
+
     res.render('orders/items', {
         order: order.toJSON(),
         orderItems: orderItems.toJSON(),
@@ -118,24 +118,31 @@ router.post('/:order_id/status/update', async function(req, res){
     res.redirect(`/orders/${req.params.order_id}/items`)
 })
 
-router.get('/:order_id/delete', async function(req, res){
+router.post('/:order_id/delete', async function(req, res){
     const orderServices = new OrderServices(req.params.order_id)
     const order = await orderServices.getOrder()
+
     if (order.toJSON().status_id === 3 || order.toJSON().status_id === 4) {
         req.flash('error_messages', 'Completed orders cannot be deleted.')
         res.redirect('/orders')
     } else {
-        res.render('orders/delete', {
-            order: order.toJSON()
-        })
+        await orderServices.deleteOrder()
+        req.flash('success_messages', 'Order has been deleted.')
+        res.redirect('/orders')
     }
 })
 
-router.post('/:order_id/delete', async function(req, res){
-    const orderServices = new OrderServices(req.params.order_id)
-    await orderServices.deleteOrder()
-    req.flash('success_messages', 'Order has been deleted.')
-    res.redirect('/orders')
-})
+// router.get('/:order_id/delete', async function(req, res){
+//     const orderServices = new OrderServices(req.params.order_id)
+//     const order = await orderServices.getOrder()
+//     if (order.toJSON().status_id === 3 || order.toJSON().status_id === 4) {
+//         req.flash('error_messages', 'Completed orders cannot be deleted.')
+//         res.redirect('/orders')
+//     } else {
+//         res.render('orders/delete', {
+//             order: order.toJSON()
+//         })
+//     }
+// })
 
 module.exports = router

@@ -342,12 +342,6 @@ router.post('/:product_id/variants/:variant_id/update', async function(req, res)
     })
 })
 
-router.get('/:product_id/variants/:variant_id/delete', async function(req, res){
-    const variant = await dataLayer.getVariantsById(req.params.variant_id)
-    res.render('products/variants-delete',{
-        variant: variant.toJSON()
-    })
-})
 
 router.post('/:product_id/variants/:variant_id/delete', async function(req,res){
     const variant = await dataLayer.getVariantsById(req.params.variant_id)
@@ -355,5 +349,12 @@ router.post('/:product_id/variants/:variant_id/delete', async function(req,res){
         req.flash('success_messages', `Product variant has been deleted.`)
         res.redirect(`/products/${req.params.product_id}/variants`)
 })
+
+// router.get('/:product_id/variants/:variant_id/delete', async function(req, res){
+//     const variant = await dataLayer.getVariantsById(req.params.variant_id)
+//     res.render('products/variants-delete',{
+//         variant: variant.toJSON()
+//     })
+// })
 
 module.exports = router 

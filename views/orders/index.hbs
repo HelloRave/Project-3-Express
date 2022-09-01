@@ -60,6 +60,10 @@
                             <a class="btn btn-dark btn-outline-light" href="/orders/{{this.order_id}}/items">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
+                            <a href="#" class="btn btn-dark btn-outline-light delete-orders-btn"
+                                data-csrf-token="{{csrfToken}}">
+                                <i class="fa-sharp fa-solid fa-trash" data-order-id="{{this.order_id}}"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -125,5 +129,36 @@
         </table>
     </div>
 </div>
+{{/block}}
+
+{{#block 'js'}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    let deleteBtns = document.querySelectorAll('.delete-orders-btn');
+    for (let btn of deleteBtns) {
+        btn.addEventListener('click', async function (event) {
+            event.preventDefault();
+
+            const result = await Swal.fire({
+                title: `Are you sure you want to delete Order ID: ${event.target.dataset.orderId}`,
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirm Delete'
+            })
+
+            if (result.isConfirmed) {
+                const form = document.createElement('form')
+                form.method = 'POST'
+                form.action = `/orders/${event.target.dataset.orderId}/delete`
+                document.querySelector('body').appendChild(form)
+                form.innerHTML = `{{> csrfToken}}`
+                form.submit();
+            }
+        })
+    }
+</script>
 {{/block}}
 {{/extends}}
