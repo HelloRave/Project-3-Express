@@ -96,12 +96,14 @@ router.get('/', async function(req, res){
 router.get('/:order_id/items', async function(req, res){
     const status = await orderDataLayer.getAllStatuses()
     const orderServices = new OrderServices(req.params.order_id)
-    const order = orderServices.getOrder()
-    const orderItems = orderServices.getOrderItems()
+    const order = await orderServices.getOrder()
+    const orderItems = await orderServices.getOrderItems()
     const statusForm = createStatusForm(status)
 
     statusForm.fields.status_id.value = order.get('status_id')
 
+    console.log(orderItems.toJSON())
+    
     res.render('orders/items', {
         order: order.toJSON(),
         orderItems: orderItems.toJSON(),

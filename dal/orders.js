@@ -18,12 +18,12 @@ const getOrderByUserId = async (userId) => {
     })
 }
 
-const getOrderItems = async (userId) => {
+const getOrderItems = async (orderId) => {
     return await OrderItem.where({
-        user_id: userId
+        order_id: orderId
     }).fetchAll({
         require: false,
-        withRelated: ['variant']
+        withRelated: ['variant', 'variant.flavour', 'variant.product', 'variant.product.category', 'variant.product.brand']
     })
 }
 

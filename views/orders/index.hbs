@@ -23,7 +23,7 @@
     </div>
     <div class="my-4">
         <h3>Pending Order</h3>
-        <table class="table">
+        <table class="table border">
             <thead>
                 <tr>
                     <th>Order ID</th>
@@ -38,6 +38,7 @@
                 </tr>
             </thead>
             <tbody>
+                {{#if pending}}
                 {{#each pending}}
                 <tr>
                     <td>{{this.order_id}}</td>
@@ -63,12 +64,17 @@
                     </td>
                 </tr>
                 {{/each}}
+                {{else}}
+                <tr>
+                    <td colspan="9">No Pending Orders</td>
+                </tr>
+                {{/if}}
             </tbody>
         </table>
     </div>
     <div>
         <h3>Completed Order</h3>
-        <table class="table">
+        <table class="table border">
             <thead>
                 <tr>
                     <th>Order ID</th>
@@ -111,7 +117,7 @@
                 {{/each}}
                 {{else}}
                 <tr>
-                    <td>No Completed Orders</td>
+                    <td colspan="9">No Completed Orders</td>
                 </tr>
                 {{/if}}
             </tbody>
