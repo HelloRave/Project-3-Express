@@ -102,8 +102,6 @@ router.get('/:order_id/items', async function(req, res){
 
     statusForm.fields.status_id.value = order.get('status_id')
 
-    console.log(orderItems.toJSON())
-
     res.render('orders/items', {
         order: order.toJSON(),
         orderItems: orderItems.toJSON(),

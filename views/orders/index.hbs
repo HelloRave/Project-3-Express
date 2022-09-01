@@ -51,9 +51,9 @@
                         {{#if this.address.state}}{{this.address.state}}<br>{{/if}}
                         {{#if this.address.city}}{{this.address.city}}<br>{{/if}}
                     </td>
-                    <td>{{this.total_cost}}</td>
+                    <td>{{convertCentsToDollars this.total_cost}}</td>
                     <td>{{this.payment_ref}}</td>
-                    <td>{{this.order_date}}</td>
+                    <td>{{convertIsoDate this.order_date}}</td>
                     <td>{{this.status.status_name}}</td>
                     <td>
                         <div class="btn-group btn-group-sm">
@@ -106,9 +106,9 @@
                         {{#if this.address.state}}{{this.address.state}}<br>{{/if}}
                         {{#if this.address.city}}{{this.address.city}}<br>{{/if}}
                     </td>
-                    <td>{{this.total_cost}}</td>
+                    <td>{{convertCentsToDollars this.total_cost}}</td>
                     <td>{{this.payment_ref}}</td>
-                    <td>{{this.order_date}}</td>
+                    <td>{{convertIsoDate this.order_date}}</td>
                     <td>{{this.status.status_name}}</td>
                     <td>
                         <div class="btn-group btn-group-sm">

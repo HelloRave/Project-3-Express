@@ -44,6 +44,19 @@ app.use(session({
     saveUninitialized: true 
 }))
 
+// Custom handlebar helpers
+hbs.registerHelper('convertCentsToDollars', (cents) => {
+    return (Number(cents) / 100).toFixed(2)
+})
+
+hbs.registerHelper('convertIsoDate', (isoDate) => {
+    return (`${isoDate.getDate()}-${isoDate.getMonth() + 1}-${isoDate.getFullYear()}`)
+})
+
+hbs.registerHelper('subTotal', (quantity, cost) => {
+    return (quantity * cost / 100).toFixed(2)
+})
+
 // Enable csrf protection
 const csrfInstance = csrf();
 app.use(function(req,res,next){
