@@ -1,45 +1,45 @@
-// const express = require('express')
-// const { createUserForm, bootstrapField, createLoginForm } = require('../forms');
-// const { User } = require('../models');
-// const router = express.Router()
-// const crypto = require('crypto')
+const express = require('express')
+const { createUserForm, bootstrapField } = require('../../forms');
+const { User } = require('../../models');
+const router = express.Router()
+const crypto = require('crypto')
 
-// const getHashedPassword = (password) => {
-//     const sha256 = crypto.createHash('sha256')
-//     const hash = sha256.update(password).digest('base64')
-//     return hash 
-// }
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256')
+    const hash = sha256.update(password).digest('base64')
+    return hash 
+}
 
-// router.get('/register', function (req, res) {
-//     const registerForm = createUserForm();
-//     res.render('users/register', {
-//         form: registerForm.toHTML(bootstrapField)
-//     })
-// })
+router.get('/register', function (req, res) {
+    const registerForm = createUserForm();
+    res.render('users/register', {
+        form: registerForm.toHTML(bootstrapField)
+    })
+})
 
-// router.post('/register', function (req, res) {
-//     const registerForm = createUserForm();
-//     registerForm.handle(req, {
-//         success: async function (form) {
-//             let { confirm_password, ...userData } = form.data
-//             userData.password = getHashedPassword(userData.password)
-//             const user = new User(userData)
-//             await user.save()
-//             req.flash('success_messages', 'User signed up successfully')
-//             res.redirect('/user/login')
-//         },
-//         error: function (form) {
-//             res.render('users/register', {
-//                 form: form.toHTML(bootstrapField)
-//             })
-//         },
-//         empty: function (form) {
-//             res.render('users/register', {
-//                 form: form.toHTML(bootstrapField)
-//             })
-//         }
-//     })
-// })
+router.post('/register', function (req, res) {
+    const registerForm = createUserForm();
+    registerForm.handle(req, {
+        success: async function (form) {
+            let { confirm_password, ...userData } = form.data
+            userData.password = getHashedPassword(userData.password)
+            const user = new User(userData)
+            await user.save()
+            req.flash('success_messages', 'User signed up successfully')
+            res.redirect('/admin/login')
+        },
+        error: function (form) {
+            res.render('users/register', {
+                form: form.toHTML(bootstrapField)
+            })
+        },
+        empty: function (form) {
+            res.render('users/register', {
+                form: form.toHTML(bootstrapField)
+            })
+        }
+    })
+})
 
 // router.get('/login', function (req, res) {
 //     const loginForm = createLoginForm()
@@ -112,4 +112,4 @@
 //     res.redirect('/user/login')
 // })
 
-// module.exports = router 
+module.exports = router 

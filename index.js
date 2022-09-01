@@ -122,6 +122,7 @@ app.use('/products', admin.products)
 app.use('/orders', admin.orders)
 app.use('/admin', admin.login)
 app.use('/cloudinary', admin.cloudinary)
+app.use('/users', admin.users)
 
 // API routes
 app.use('/api/products', express.json(), api.products)
