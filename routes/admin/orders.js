@@ -7,7 +7,7 @@ const OrderServices = require('../../services/order_services')
 
 router.get('/', async function(req, res){
     const status = await orderDataLayer.getAllStatuses()
-    status.unshift([0, '--- Select Status ---'])
+    status.unshift(["0", '--- Select Status ---'])
 
     const orderSearchForm = createOrderSearchForm(status)
     let query = Order.collection()
@@ -33,7 +33,7 @@ router.get('/', async function(req, res){
             if (form.data.order_date) {
                 query.where('order_date', '=', form.data.order_date)
             }
-            if (form.data.status_id) {
+            if (form.data.status_id && form.data.status_id !== "0") {
                 query.where('status_id', '=', form.data.status_id)
             }
 
@@ -42,11 +42,7 @@ router.get('/', async function(req, res){
             })
 
             const pending = orders.toJSON().filter(order => {
-                return order.status_id == 1 || order.status_id == 2
-            })
-
-            const delivered = orders.toJSON().filter(order => {
-                return order.status_id == 3
+                return order.status_id !== 4
             })
 
             const completed = orders.toJSON().filter(order => {
@@ -55,7 +51,7 @@ router.get('/', async function(req, res){
 
             res.render('orders/index', {
                 form: form.toHTML(bootstrapField),
-                pending, delivered, completed
+                pending, completed
             })
         },
         error: async function(form){
@@ -64,11 +60,7 @@ router.get('/', async function(req, res){
             })
 
             const pending = orders.toJSON().filter(order => {
-                return order.status_id == 1 || order.status_id == 2
-            })
-
-            const delivered = orders.toJSON().filter(order => {
-                return order.status_id == 3
+                return order.status_id !== 4
             })
 
             const completed = orders.toJSON().filter(order => {
@@ -77,7 +69,7 @@ router.get('/', async function(req, res){
 
             res.render('orders/index', {
                 form: form.toHTML(bootstrapField),
-                pending, delivered, completed
+                pending, completed
             })
         },
         empty: async function(form){
@@ -86,11 +78,7 @@ router.get('/', async function(req, res){
             })
 
             const pending = orders.toJSON().filter(order => {
-                return order.status_id == 1 || order.status_id == 2
-            })
-
-            const delivered = orders.toJSON().filter(order => {
-                return order.status_id == 3
+                return order.status_id !== 4
             })
 
             const completed = orders.toJSON().filter(order => {
@@ -99,7 +87,7 @@ router.get('/', async function(req, res){
 
             res.render('orders/index', {
                 form: form.toHTML(bootstrapField),
-                pending, delivered, completed
+                pending, completed
             })
         }
     })
