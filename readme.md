@@ -1,3 +1,9 @@
+# Project-3-Express
+
+This is an Express server and is the backend for Ripped project
+- Access demo integration with frontend [here](https://mrripped.netlify.app/products)
+- For more details, please visit the README at frontend repository [here](https://github.com/HelloRave/Project-3-React)
+
 To start mysql, in the terminal, type in `mysql -u root`
 
 # Create a new database user
