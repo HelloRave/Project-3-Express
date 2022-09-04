@@ -1,12 +1,12 @@
 {{#extends 'base'}}
 {{#block 'content'}}
-<div class="container login-form-div d-flex justify-content-center align-items-center">
-    <div class="container mt-auto mb-auto login-form">
+<div class="container login-form-div d-flex justify-content-center align-items-center mt-5">
+    <div class="container w-50">
         <h3>Login</h3>
         <form method="POST">
             {{> csrfToken}}
             {{{form}}}
-            <input type="submit" value="Login" class="btn btn-primary my-3">
+            <input type="submit" value="Login" class="theme-button my-3">
         </form>
     </div>
 </div>

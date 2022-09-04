@@ -59,10 +59,10 @@
                     {{/each}}
                 </td>
                 <td>
-                    <a href="/products/{{this.product_id}}/variants" class="btn btn-primary btn-sm">Variants</a>
-                    <a href="/products/{{this.product_id}}/update" class="btn btn-primary btn-sm">Update</a>
+                    <a href="/products/{{this.product_id}}/variants" class="btn theme-button mb-2">Variants</a>
+                    <a href="/products/{{this.product_id}}/update" class="btn theme-button mb-2">Update</a>
                     <a href="#" 
-                       class="delete-btn btn btn-danger btn-sm"
+                       class="btn delete-btn theme-button mb-2"
                        data-csrf-token="{{csrfToken}}"
                        data-product-id="{{this.product_id}}"
                        data-product-name="{{this.product_name}}">
